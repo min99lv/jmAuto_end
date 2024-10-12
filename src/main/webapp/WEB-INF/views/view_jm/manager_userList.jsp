@@ -608,24 +608,24 @@
 			<div class="manager_pagination">
 
 				<!-- 이전 페이지 ------------------->
-				<c:if test="${paging.prev}">
+				<c:if test="${page.startPage > page.pageBlock}">
 					<a id="page" class="manager_pagination_a_back" href="?currentPage=${paging.startPage - 1}">이전</a>
 				</c:if>
 
 				<!-- 현재 페이지 ------------------->
-				<c:forEach var="i" begin="${paging.startPage}" end="${paging.endPage}">
+				<c:forEach var="i" begin="${page.startPage}" end="${page.endPage}">
 					<c:choose>
-						<c:when test="${i == paging.currentPage}">
+						<c:when test="${i == page.currentPage}">
 							<span class="manager_pagination_current">${i}</span>
 						</c:when>
 						<c:otherwise>
-							<a id="page" class="manager_pagination_a" href="?currentPage=${i}">${i}</a>
+							<a id="page" class="manager_pagination_a"></a>
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
 
 				<!--  다음 페이지 -------------------->
-				<c:if test="${paging.next}">
+				<c:if test="${page.endPage < page.totalPage}">
 					<a class="manager_pagination_a_next" id="page" href="?currentPage=${paging.endPage + 1}">다음</a>
 				</c:if>
 			</div>

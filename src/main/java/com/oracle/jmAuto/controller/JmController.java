@@ -586,25 +586,28 @@ public class JmController {
 
 	// NOTE : 회원 목록 조회
 	@GetMapping(value = "/manager_userList")
-	public String adminPage(@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,HttpSession session, Model model) {
+	public String adminPage(@RequestParam(value = "currentPage", defaultValue = "1") String currentPage
+												,HttpSession session, Model model) {
 
 		System.out.println("AdminController.adminPage() start...");
 		User_Table user = (User_Table) session.getAttribute("user");
 
-		// user가 null인지 확인하고, user_type이 'A'인지 확인
+		//  manager 페이지 접근을 위해  --> user가 null인지 확인하고, user_type이 'A'인지 확인 
 		if (user != null && "A".equals(user.getUser_type())) {
-			
 			
 			// 총 회원수 
 			int userTotal = js.userTotal();
-			Paging paging = new Paging(userTotal,String.valueOf(currentPage), 10, 5);
+			// 관리자용 페이징
+			Paging page = new Paging(userTotal,currentPage);
 			
-
-			List<User_Table> userList = js.selectUserList(paging.getStartIndex(), paging.getRowPage());
-
-
-			model.addAttribute("paging", paging);
+			// 회원 목록 조회
+			List<User_Table> userList = js.selectUserList(page.getStart(), page.getEnd());
+			
+			// 모델에 데이터 추가
+			model.addAttribute("page", page);
 			model.addAttribute("userList", userList);
+
+
 			// user_type이 'A'인 경우 관리자 페이지로 이동
 			return "view_jm/manager_userList";
 		} else {
@@ -616,7 +619,7 @@ public class JmController {
 	// NOTE : 회원 목록 검색
 	@GetMapping(value = "/searchUser")
 	@ResponseBody
-	public List<User_Table> searchUserList(@RequestParam(value = "currentPage", defaultValue = "1") int currentPage, @RequestParam("keyword") String keyword, HttpSession session, Model model) {
+	public List<User_Table> searchUserList(@RequestParam(value = "currentPage", defaultValue = "1") String currentPage, @RequestParam("keyword") String keyword, HttpSession session, Model model) {
 
 		System.out.println("AdminController.searchUserList() start...");
 
@@ -624,21 +627,20 @@ public class JmController {
 
 		// 총 회원수 
 		int userTotal = js.userTotal(keyword);
-		Paging paging = new Paging(userTotal,String.valueOf(currentPage), 10, 10);
+		Paging paging = new Paging(userTotal,currentPage);
 
-		System.out.println("JmController.searchUserList()paging.getStartIndex();-------------------"+paging.getStartIndex());
-		System.out.println("JmController.searchUserList()paging.getRowPage();-------------------"+paging.getRowPage());
+		System.out.println("JmController.searchUserList()paging.getStartIndex();-------------------"+paging);
 		
 
-		List<User_Table> users = js.searchUserList(keyword,paging.getStartIndex(), paging.getRowPage());
+		//List<User_Table> users = js.searchUserList(keyword,paging.getStartIndex(), paging.getRowPage());
 
 		System.out.println("JmController.searchUserList()paging.getStartPage();-------------------"+paging.getStartPage());
 		System.out.println("JmController.searchUserList()paging.getEndPage();-------------------"+paging.getEndPage());
 
-		model.addAttribute("paging", paging);
-		model.addAttribute("users", users);
+		//model.addAttribute("paging", paging);
+		//model.addAttribute("users", users);
 
-		return users;
+		return null;
 	}
 
 
