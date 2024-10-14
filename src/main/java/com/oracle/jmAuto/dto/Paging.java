@@ -24,34 +24,69 @@ public class Paging {
         this.currentPage = 1;           // 기본값 설정 (첫 페이지)
     }
 
-    public Paging (int total, String currentPage1){
-        this.total = total; // 30
-
-        if(currentPage1 != null){
-            this.currentPage = Integer.parseInt(currentPage1); // 1
+    public Paging(int total, String currentPage1) {
+        this.total = total; // 전체 데이터 개수 설정
+    
+        if (currentPage1 != null) {
+            this.currentPage = Integer.parseInt(currentPage1);
+        } else {
+            this.currentPage = 1; // 기본값 설정
         }
-
-        //                  1                                  5
-        start = (currentPage -1) * rowPage + 1;   // 시작시 1               
-        end = start + rowPage - 1;                         // 시작시 5
-
-        //  전체 페이지 수 계산                             30        5
-        totalPage = (int) Math.ceil((double)total / rowPage); // 시작시 6
-
-        //  블록의 시작  -     1                           1                           10
-        startPage = currentPage - (currentPage - 1) % pageBlock; // 시작시 1
-        // 블록의 끝   -       1                       10        
-        endPage = startPage + pageBlock - 1; // 시작시  10
-
-
-         // 페이지 블록의 끝이 totalPage를 넘지 않도록 조정
-        if(endPage > totalPage){
+    
+        // 기본값을 보장하기 위해 rowPage가 0인지 확인
+        if (rowPage == 0) {
+            rowPage = 10; // 기본 페이지당 데이터 수 설정
+        }
+    
+        // 기본값을 보장하기 위해 pageBlock이 0인지 확인
+        if (pageBlock == 0) {
+            pageBlock = 5; // 기본 페이지 블록 수 설정
+        }
+    
+        start = (currentPage - 1) * rowPage + 1;
+        end = start + rowPage - 1;
+    
+        // 전체 페이지 수 계산 (rowPage가 0이 아님을 확인했으므로 안전)
+        totalPage = (int) Math.ceil((double) total / rowPage);
+    
+        startPage = currentPage - (currentPage - 1) % pageBlock;
+        endPage = startPage + pageBlock - 1;
+    
+        // 페이지 블록의 끝이 totalPage를 넘지 않도록 조정
+        if (endPage > totalPage) {
             endPage = totalPage;
         }
-
-
-
     }
+    
+
+    // public Paging (int total, String currentPage1){
+    //     this.total = total; // 30
+
+    //     if(currentPage1 != null){
+    //         this.currentPage = Integer.parseInt(currentPage1); // 1
+    //     }
+
+    //     //                  1                                  5
+    //     start = (currentPage -1) * rowPage + 1;   // 시작시 1               
+    //     end = start + rowPage - 1;                         // 시작시 5
+
+    //     //  전체 페이지 수 계산                             30        5
+    //     totalPage = (int) Math.ceil((double)total / rowPage); // 시작시 6
+
+    //     //  블록의 시작  -     1                           1                           10
+    //     startPage = currentPage - (currentPage - 1) % pageBlock; // 시작시 1
+    //     // 블록의 끝   -       1                       10        
+    //     endPage = startPage + pageBlock - 1; // 시작시  10
+
+
+    //      // 페이지 블록의 끝이 totalPage를 넘지 않도록 조정
+    //     if(endPage > totalPage){
+    //         endPage = totalPage;
+    //     }
+
+
+
+    // }
 
 
 

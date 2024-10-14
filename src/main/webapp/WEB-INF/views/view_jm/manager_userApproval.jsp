@@ -5,8 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>User Management</title>
-<div class="header_continer"><%@ include
-		file="../header.jsp"%></div>
+<div class="header_continer"><%@ include file="../header.jsp"%></div>
 <div class="menu_continer"><%@ include file="../manager_menu.jsp"%></div>
 <style>
 body {
@@ -56,9 +55,10 @@ body {
 
 .manager_header {
 	display: flex;
-	margin: 20px 0;
 	justify-content: space-between;
+	margin: 40px 0 20px;
 	align-items: center;
+	height: 55px;
 }
 
 .manager_header_h1 {
@@ -66,15 +66,25 @@ body {
 	font-weight: 550;
 }
 
-.userTypeBtn button {
+.manager_header_h1 a {
+	color: fafafa;
+}
+
+.manager_header_h1 a button {
 	border: none;
 	background-color: #ff4714;
-	color: #fafafa;
-	width: 100px;
-	height: 50px;
-	margin: 0 20px;
-	font-weight: bold;
-	font-size: 16px;
+	color: white;
+	margin-left: 20px;
+	height: 30px;
+	font-size: 15px;
+}
+
+.manager_header_h1 button:hover {
+	border: none;
+	background-color: black;
+	color: white;
+	margin-left: 20px;
+	height: 30px;
 }
 
 .hidden {
@@ -213,6 +223,7 @@ td {
 	cursor: pointer;
 }
 
+
 .form-group {
 	margin-bottom: 30px;
 	/* 각 폼 그룹의 하단 마진을 설정합니다. */
@@ -252,6 +263,113 @@ td {
 	height: 30px;
 	font-size: 16px;
 }
+
+.paging {
+	text-align: center;
+	font-size: 20px;
+}
+
+.keyword {
+	width: 600px;
+	border: none;
+	padding: 20px;
+	box-shadow: 0 0 10px 5px rgb(0, 0, 0, 0.02);
+}
+
+.manager_pagination_current {
+	background-color: #ff4714;
+	color: #fdfdfd;
+	/* 텍스트 색상 */
+	padding: 5px 10px;
+	/* 패딩 추가 */
+	border-radius: 5px;
+	/* 둥근 모서리 */
+	font-weight: bold;
+	/* 글씨 두껍게 */
+}
+
+.manager_pagination {
+	font-size: 16px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 0 0 80px;
+}
+
+.manager_pagination_a {
+	color: #323232;
+	margin: 0 5px;
+}
+
+.manager_pagination_a_next {
+	color: #ff4714;
+	text-decoration: underline;
+	text-underline-position: under;
+	font-weight: 700;
+	margin: 0 5px;
+}
+
+.manager_pagination_a_back {
+	color: #ff4714;
+	text-decoration: underline;
+	text-underline-position: under;
+	font-weight: 700;
+	margin: 0 5px;
+}
+
+.manager_Qna_header_search {
+	display: flex;
+	position: relative;
+}
+
+.manager_Qna_header_search_but {
+	position: absolute;
+	right: 15px;
+	bottom: 10px;
+	border: none;
+	width: 50px;
+	height: 30px;
+	box-shadow: 0 0 10px 5px rgb(0, 0, 0, 0.01);
+	cursor: pointer;
+}
+.td_approval{
+	display: flex;
+	justify-content: center;
+	align-content: centerl
+}
+	.car_del_state_back1 {
+							background-color: #ff4714;
+							height: 25px;
+							width: 60px;
+							display: flex;
+							justify-content: center;
+							text-align: center;
+						}
+
+						.car_del_state1 {
+							font-size: 12px;
+							color: #fdfdfd;
+							align-items: center;
+							margin: 4px
+						}
+
+
+						/* 삭제시 */
+						.car_del_state_back2 {
+							background-color: #5B4A80;
+							height: 25px;
+							width: 60px;
+							display: flex;
+							justify-content: center;
+						}
+
+						.car_del_state2 {
+							font-size: 12px;
+							color: #fdfdfd;
+							align-items: center;
+							margin: 4px
+						}
+	
 </style>
 </head>
 <script>
@@ -259,46 +377,48 @@ td {
 		window.location.href = 'manager_userDetail?user_id=' + userId;
 	}
 
-	function filterUserType(type) {
-		// 모든 행을 숨김
-		$("#userTable tbody tr").addClass("hidden");
+	// function filterUserType(type) {
+	// 	// 모든 행을 숨김
+	// 	$("#userTable tbody tr").addClass("hidden");
 
-		if (type === 'all') {
-			// 모든 사용자 유형을 표시
-			$("#userTable tbody tr").removeClass("hidden");
-		} else {
-			// 선택된 사용자 유형의 행만 표시
-			$("#userTable tbody tr[data-type='" + type + "']").removeClass(
-					"hidden");
-		}
-	}
+	// 	if (type === 'all') {
+	// 		// 모든 사용자 유형을 표시
+	// 		$("#userTable tbody tr").removeClass("hidden");
+	// 	} else {
+	// 		// 선택된 사용자 유형의 행만 표시
+	// 		$("#userTable tbody tr[data-type='" + type + "']").removeClass(
+	// 				"hidden");
+	// 	}
+	// }
 
-	$(document).ready(function() {
-		// 페이지 로드 시 모든 사용자 유형 표시
-		filterUserType('all');
-	});
+	// $(document).ready(function() {
+	// 	// 페이지 로드 시 모든 사용자 유형 표시
+	// 	filterUserType('all');
+	// });
 </script>
 
 <body>
 	<div class="manager_container">
-		<div class="manager_gogi">
-			<div class="manager_menu">
-				<div class="userTypeBtn">
-					<button class="userType" onclick="filterUserType('all')">전체</button>
-					<!-- 모든 사용자 보기 버튼 추가 -->
-					<button class="userType" onclick="filterUserType('S')">판매자</button>
-					<button class="userType" onclick="filterUserType('P')">전문가</button>
-				</div>
+
+		<div class="manager_header">
+			<div class="manager_header_h1">
+				가입 승인 요청
+				<!-- 사용자 버튼 -->
+				<a href="/view_jm/manager_userApproval">
+					<button>전체</button>
+				</a> <a href="/view_jm/manager_userApproval?&user_type=S">
+					<button>판매자</button>
+				</a> <a href="/view_jm/manager_userApproval?&user_type=P">
+					<button>전문가</button>
+				</a>
+
 			</div>
-			<div class="manager_header">
-				<div class="manager_header_h1">가입 승인 요청</div>
-				<div class="manager_header_gene"></div>
-			</div>
-			<div class="manager_CS_list">
-				<div class="container_nav"></div>
-				<div class="container_nav"></div>
-				<div class="container_table">
-					<div class="button-group"></div>
+		</div>
+		<div class="manager_CS_list">
+			<div class="container_nav"></div>
+			<div class="container_nav"></div>
+			<div class="container_table">
+				<c:if test="${total>0}">
 					<table id="userTable">
 						<thead>
 							<tr>
@@ -317,7 +437,10 @@ td {
 								<tr data-type="${users.user_type }"
 									onclick="goToDetail('${users.user_id }')">
 									<!-- data-type 속성 추가 -->
-									<td>${users.user_type }</td>
+									<td><c:choose>
+											<c:when test="${users.user_type == 'P'}">전문가</c:when>
+											<c:when test="${users.user_type == 'S'}">판매자</c:when>
+										</c:choose></td>
 									<td>${users.user_id }</td>
 									<td>${users.user_name }</td>
 									<td>${users.user_tel }</td>
@@ -325,13 +448,61 @@ td {
 									<td><fmt:formatDate value="${users.user_regdate}"
 											pattern="yyyy년 MM월 dd일" /></td>
 									<td><button id="deleteBtn">승인</button></td>
-									<td>${users.approval}</td>
+									<td class="td_approval">
+									<c:choose>
+												<c:when test="${users.approval == '0' }">
+													<div class="car_del_state_back1">
+														<div class="car_del_state1">요청</div>
+													</div>
+												</c:when>
+												<c:when test="${users.approval == '1' }">
+													<div class="car_del_state_back2">
+														<div class="car_del_state2">승인</div>
+													</div>
+												</c:when>
+											</c:choose>
+									</td>
 								</tr>
 							</c:forEach>
 						</tbody>
 					</table>
-				</div>
+				</c:if>
+
+				<c:if test="${total == 0}">
+					<div>
+						<h1>등록된 유저가 없습니다</h1>
+					</div>
+				</c:if>
+
 			</div>
 		</div>
+
+		<div class="manager_pagination">
+			<!-- 이전 페이지 ------------------->
+			<c:if test="${page.startPage > page.pageBlock}">
+				<a id="page" class="manager_pagination_a_back"
+					href="/view_jm/manager_userApproval?currentPage=${page.startPage - page.pageBlock > 0 ? page.startPage - page.pageBlock : 1}&total=${total}">
+					이전 </a>
+			</c:if>
+			<!-- 현재 페이지 ------------------->
+			<c:forEach var="i" begin="${page.startPage}" end="${page.endPage}">
+				<c:choose>
+					<c:when test="${i == page.currentPage}">
+						<span class="manager_pagination_current">${i}</span>
+					</c:when>
+					<c:otherwise>
+						<a id="page" class="manager_pagination_a"
+							href="/view_jm/manager_userApproval?currentPage=${i}">${i}</a>
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
+			<!--  다음 페이지 -------------------->
+			<c:if test="${page.endPage < page.totalPage}">
+				<a class="manager_pagination_a_next" id="page"
+					href="/view_jm/manager_userApproval?currentPage=${page.startPage+page.pageBlock}&total=${total}">다음</a>
+			</c:if>
+		</div>
+
+	</div>
 </body>
 </html>

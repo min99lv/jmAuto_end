@@ -458,7 +458,7 @@
 		</header>
 		<div class="contents">
 			<div class="content">
-				<h1>회원가입</h1>
+				<h1>전문가 회원가입</h1>
 			</div>
 			<div class="content">
 				<ul class="join_step">

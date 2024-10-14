@@ -66,7 +66,7 @@ footer{
 		</header>
 		<div class="contents">
 			<div class="content">
-				<h1 id="title">회원가입</h1>
+				<h1 id="title">기업회원 회원가입</h1>
 			</div>
 			<div class="content">
 				<ul class="join_step">

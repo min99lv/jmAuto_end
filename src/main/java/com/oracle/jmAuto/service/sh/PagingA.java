@@ -1,6 +1,5 @@
 package com.oracle.jmAuto.service.sh;
 
-import org.springframework.stereotype.Service;
 
 import lombok.Data;
 

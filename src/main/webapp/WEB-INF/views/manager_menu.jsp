@@ -218,9 +218,9 @@
   <ul class="nav">
     <li class="nav__items3">
 	  <img alt="icon" src="<%=request.getContextPath()%>/images/main/회원관리_icon.png" class="nav_items_img3">
-      <a href="/view_jm/manager_userList" class="nav_items_text3">회원</a>
+      <a href="/view_jm/searchUser" class="nav_items_text3">회원</a>
       <div class="mon_nav_items">
-      	<a href="/view_jm/manager_userList">회원관리</a>
+      	<a href="/view_jm/searchUser">회원관리</a>
       	<a href="/view_jm/manager_userApproval">가입요청관리</a>
       </div>
     </li>

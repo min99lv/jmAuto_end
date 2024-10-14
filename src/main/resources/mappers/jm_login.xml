@@ -95,54 +95,46 @@
 	</select>
 
 		
-		<select id="userTotal" parameterType="String" resultType="int">
+		<select id="userTotal" parameterType="Map" resultType="int">
 		SELECT COUNT(*)
 		FROM user_table
-		WHERE
+		WHERE Approval = '1' 
+		AND user_type LIKE '%' || #{user_type} || '%'
+		AND
 		(user_id LIKE '%' || #{keyword} || '%'
 		OR user_name LIKE '%' || #{keyword} || '%'
-		OR user_email LIKE '%' || #{keyword} || '%')
+		)
 		</select>
+
+		<select id="approvalTotal" resultType="int" parameterType="String">
+        SELECT Count(*)
+        from user_table
+        where approval = '0' and
+       	(user_type LIKE '%' || #{user_type} || '%')
+</select>
 
 	<select id="selectUserList" resultType="User_Table"
 		parameterType="Map">
 		SELECT *
 		FROM (
-		SELECT a.*, ROWNUM rnum
-		FROM (
-		SELECT *
-		FROM User_Table
-		ORDER BY user_name
-		) a
-		WHERE ROWNUM &lt;= #{startIndex} + #{rowPage}
-		)
-		WHERE rnum &gt; #{startIndex}
+						SELECT a.*, ROWNUM rn
+						FROM 
+										(
+										SELECT *
+										FROM User_Table
+										WHERE approval = '1'
+										AND (user_type LIKE '%' || #{user_type} || '%')
+										ORDER BY user_name
+										) a
+						)
+		WHERE rn BETWEEN #{start} AND #{end}
 	</select>
-
-	<!-- <select id="searchUserList" resultType="User_Table"
-		parameterType="Map">
-		SELECT *
-		FROM (
-		SELECT a.*, ROWNUM rnum
-		FROM (
-		SELECT *
-		FROM User_Table
-		WHERE
-		#{keyword} IS NULL OR #{keyword} = '' OR
-		(user_id LIKE '%' || #{keyword} || '%'
-		OR user_name LIKE '%' || #{keyword} || '%'
-		OR user_id LIKE '%' || #{keyword} || '%')
-		ORDER BY user_name
-		) a
-		WHERE ROWNUM &lt;= #{startIndex} + #{rowPage}
-		)
-		WHERE rnum &gt; #{startIndex}
-	</select> -->
+	
 
 <select id="searchUserList" resultType="User_Table" parameterType="Map">
     SELECT *
     FROM (
-        SELECT a.*, ROWNUM rnum
+        SELECT a.*, ROWNUM rn
         FROM (
             SELECT *
             FROM User_Table
@@ -150,10 +142,25 @@
             (user_id LIKE '%' || #{keyword} || '%'
             OR user_name LIKE '%' || #{keyword} || '%')
             ORDER BY user_name
-        ) a
-		WHERE ROWNUM &lt;= #{startIndex} + #{rowPage}
-		)
-		WHERE rnum &gt; #{startIndex}
+      ) a
+						)
+		WHERE rn BETWEEN #{start} AND #{end}
+</select>
+
+<select id="selectUserType" resultType="User_Table" parameterType="String">
+	 SELECT *
+	 FROM (
+        SELECT a.*, ROWNUM rn
+        FROM 
+					(
+						SELECT *
+						FROM User_Table
+						WHERE 
+						(user_type LIKE '%' || #{user_type} || '%')
+						ORDER BY user_name
+					) a
+					)
+		WHERE rn BETWEEN #{start} AND #{end}
 </select>
 
 
@@ -173,11 +180,20 @@
 		where user_id = #{user_id}
 	</update>
 
-	<select id="selectApprovalUserList" resultType="User_Table">
+	<select id="selectApprovalUserList" resultType="User_Table" parameterType="Map">
 		select *
-		from
-		User_Table
-		where approval = '0'
+		from (
+			select a.*, ROWNUM rn
+			from 
+			(
+				SELECT *
+				FROM User_Table
+				where approval = '0'
+				and (user_type LIKE '%' || #{user_type} || '%')
+				ORDER BY USER_NAME
+			) a
+		)
+		WHERE rn BETWEEN #{start} AND #{end}
 	</select>
 
 	<update id="userApprove" parameterType="String">
@@ -223,10 +239,6 @@
 		VALUES
 		(#{user_id},#{user_pw},#{user_name},#{user_email},#{user_tel},#{user_type},#{del_state},#{approval})
 	</insert>
-
-	<!-- <select id="searchUserList" parameterType="String" resultType="User_Table"> 
-		SELECT * FROM user_table WHERE user_name LIKE '%' || #{keyword} || '%' OR 
-		user_id LIKE '%' || #{keyword} || '%' </select> -->
 
 
 </mapper> 

@@ -1,350 +1,366 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-	<!DOCTYPE html>
-	<div class="header_continer">
-		<%@ include file="../header.jsp" %>
-	</div>
-	<div class="menu_continer">
-		<%@ include file="../manager_menu.jsp" %>
-	</div>
-	<html>
-	<head>
-		<meta charset="UTF-8">
-		<title>Insert title here</title>
-		<style>
-			body {
-				font-family: 'Pretendard';
-				margin: 0;
-				padding: 0;
-				box-sizing: border-box;
-			}
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<div class="header_continer">
+	<%@ include file="../header.jsp"%>
+</div>
+<div class="menu_continer">
+	<%@ include file="../manager_menu.jsp"%>
+</div>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+body {
+	font-family: 'Pretendard';
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
 
-			.header_continer {
-				position: relative;
-				width: 100%;
-				top: 0;
-				z-index: 1001;
-			}
+.header_continer {
+	position: relative;
+	width: 100%;
+	top: 0;
+	z-index: 1001;
+}
 
+.manager_Qna_header_search {
+	display: flex;
+	position: relative;
+}
 
-			.manager_Qna_header_search {
-				display: flex;
-				position: relative;
-			}
+.manager_Qna_header_search_but {
+	position: absolute;
+	right: 15px;
+	bottom: 10px;
+	border: none;
+	width: 50px;
+	height: 30px;
+	box-shadow: 0 0 10px 5px rgb(0, 0, 0, 0.01);
+	cursor: pointer;
+}
 
-			.manager_Qna_header_search_but {
-				position: absolute;
-				right: 15px;
-				bottom: 10px;
-				border: none;
-				width: 50px;
-				height: 30px;
-				box-shadow: 0 0 10px 5px rgb(0, 0, 0, 0.01);
-				cursor: pointer;
-			}
+.manager_header_h1 button {
+	border: none;
+	background-color: #ff4714;
+	color: white;
+	margin-left: 20px;
+	height: 30px;
+	font-size: 15px;
+}
 
-			.manager_header_h1 button {
-				border: none;
-				background-color: #ff4714;
-				color: white;
-				margin-left: 20px;
-				height: 30px;
-				font-size: 15px;
-			}
+.manager_header_h1 button:hover {
+	border: none;
+	background-color: black;
+	color: white;
+	margin-left: 20px;
+	height: 30px;
+}
 
-			.manager_header_h1 button:hover {
-				border: none;
-				background-color: black;
-				color: white;
-				margin-left: 20px;
-				height: 30px;
-			}
+.menu_continer {
+	position: fixed;
+	top: 0;
+	z-index: 1000;
+	height: 100vh;
+}
 
-			.menu_continer {
-				position: fixed;
-				top: 0;
-				z-index: 1000;
-				height: 100vh;
-			}
+.manager_container {
+	display: grid;
+	grid-template-columns: minmax(auto, 1320px);
+	justify-content: center;
+	max-width: 100%;
+	margin: 0px auto;
+	background-color: #f7f7f7;
+	height: auto;
+}
 
+.manager_menu {
+	background: #fdfdfd;
+	box-shadow: 0 0 10px 5px rgb(0, 0, 0, 0.06);
+	width: 100%;
+	max-width: 400px;
+	height: auto;
+	margin: 40px 0 20px;
+}
 
-			.manager_container {
-				display: grid;
-				grid-template-columns: minmax(auto, 1320px);
-				justify-content: center;
-				max-width: 100%;
-				margin: 0px auto;
-				background-color: #f7f7f7;
-				height: auto;
-			}
+.manager_header {
+	display: flex;
+	justify-content: space-between;
+	margin: 40px 0 20px;
+	align-items: center;
+}
 
-			.manager_menu {
-				background: #fdfdfd;
-				box-shadow: 0 0 10px 5px rgb(0, 0, 0, 0.06);
-				width: 100%;
-				max-width: 400px;
-				height: auto;
-				margin: 40px 0 20px;
-			}
+.manager_header_h1 {
+	font-size: 24px;
+	font-weight: 550;
+}
 
-			.manager_header {
-				display: flex;
-				justify-content: space-between;
-				margin: 40px 0 20px;
-				align-items: center;
-			}
+.hidden {
+	display: none;
+	/* 숨기기 위한 클래스 */
+}
 
-			.manager_header_h1 {
-				font-size: 24px;
-				font-weight: 550;
-			}
+#addAdminBtn {
+	border: none;
+	background-color: #ff4714;
+	color: #fdfdfd;
+	width: 100%;
+	max-width: 100px;
+	height: 35px;
+	font-size: 14px;
+	font-weight: bold;
+}
 
+#addAdminBtn:hover {
+	background-color: #323232;
+	color: #fdfdfd;
+}
 
-			.hidden {
-				display: none;
-				/* 숨기기 위한 클래스 */
-			}
+.container {
+	background-color: #fafafa;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
 
-			#addAdminBtn {
-				border: none;
-				background-color: #ff4714;
-				color: #fdfdfd;
-				width: 100%;
-				max-width: 100px;
-				height: 35px;
-				font-size: 14px;
-				font-weight: bold;
-			}
+.container_table {
+	background-color: #fdfdfd;
+	box-shadow: 0 0 10px 5px rgb(0, 0, 0, 0.06);
+	height: auto;
+	margin: 0 0 40px;
+}
 
-			#addAdminBtn:hover {
-				background-color: #323232;
-				color: #fdfdfd;
-			}
+/* 테이블 스타일 */
+table {
+	padding: 0 20px 5px;
+	width: 1280px;
+}
 
-			.container {
-				background-color: #fafafa;
-				box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-			}
+th {
+	width: 200px;
+	color: gray;
+	font-weight: bold;
+	text-align: center;
+	/* 중앙 정렬 */
+	padding: 20px 0;
+}
 
-			.container_table {
-				background-color: #fdfdfd;
-				box-shadow: 0 0 10px 5px rgb(0, 0, 0, 0.06);
-				height: auto;
-				margin: 0 0 40px;
-			}
+td {
+	border-top: 0.4px solid #e2e8ee;
+	padding: 20px 0;
+	cursor: pointer;
+	font-weight: bold;
+	text-align: center;
+	/* 중앙 정렬 */
+	color: #323232;
+	font-size: 14px;
+}
 
-			/* 테이블 스타일 */
-			table {
-				padding: 0 20px 5px;
-				width: 1280px;
-			}
+/* 모달 기본 스타일 */
+.modal {
+	display: none;
+	/* 기본적으로 숨김 */
+	position: fixed;
+	z-index: 1;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+}
 
-			th {
-				width: 200px;
-				color: gray;
-				font-weight: bold;
-				text-align: center;
-				/* 중앙 정렬 */
-				padding: 20px 0;
-			}
+/* 모달 콘텐츠 스타일 */
+.modal-content {
+	background-color: #fff;
+	margin: 15% auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 50%;
+}
 
-			td {
-				border-top: 0.4px solid #e2e8ee;
-				padding: 20px 0;
-				cursor: pointer;
-				font-weight: bold;
-				text-align: center;
-				/* 중앙 정렬 */
-				color: #323232;
-				font-size: 14px;
-			}
+.close {
+	color: #aaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+}
 
-			/* 모달 기본 스타일 */
-			.modal {
-				display: none;
-				/* 기본적으로 숨김 */
-				position: fixed;
-				z-index: 1;
-				left: 0;
-				top: 0;
-				width: 100%;
-				height: 100%;
-				background-color: rgba(0, 0, 0, 0.5);
-			}
+.close:hover, .close:focus {
+	color: #000;
+	text-decoration: none;
+	cursor: pointer;
+}
 
-			/* 모달 콘텐츠 스타일 */
-			.modal-content {
-				background-color: #fff;
-				margin: 15% auto;
-				padding: 20px;
-				border: 1px solid #888;
-				width: 50%;
-			}
+.container_nav {
+	display: flex;
+	width: auto;
+}
 
-			.close {
-				color: #aaa;
-				float: right;
-				font-size: 28px;
-				font-weight: bold;
-			}
-
-			.close:hover,
-			.close:focus {
-				color: #000;
-				text-decoration: none;
-				cursor: pointer;
-			}
-
-			.container_nav {
-				display: flex;
-				width: auto;
-			}
-
-			.but_background {
-				background: none;
-				border: none;
-			}
+.but_background {
+	background: none;
+	border: none;
+}
 
 
-			#search_input {
-				width: px;
-				/* 너비 설정 */
-				height: 20px;
-				/* 높이 설정 */
-				border: 1px solid #ccc;
-				/* 기본 테두리 */
-				padding: 5px 10px;
-				/* 내부 패딩 */
-				font-size: 16px;
-				/* 글자 크기 */
-				box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
-				/* 내부 그림자 */
-			}
+.but_images {
+	width: 100%;
+	max-width: 21px;
+	height: auto;
+	cursor: pointer;
+}
 
-			#search_btn {
-				width: 50px;
-				height: 32px;
-			}
+.form-group {
+	margin-bottom: 30px;
+	/* 각 폼 그룹의 하단 마진을 설정합니다. */
+	display: flex;
+	/* 폼 그룹 내의 항목들을 플렉스 박스로 배치합니다. */
+	align-items: center;
+	/* 폼 그룹 내 항목들을 수직 중앙에 정렬합니다. */
+	flex-wrap: wrap;
+	/* 줄바꿈을 허용 */
+}
 
-			.but_images {
-				width: 100%;
-				max-width: 21px;
-				height: auto;
-				cursor: pointer;
-			}
+.form-group label {
+	width: 150px;
+	/* 라벨의 너비를 150px로 설정합니다. */
+	margin-right: 10px;
+	/* 라벨과 입력 필드 사이의 여백을 설정합니다. */
+	font-weight: bold;
+	/* 라벨의 글씨를 두껍게 설정합니다. */
+	font-size: 21px;
+}
 
-			.form-group {
-				margin-bottom: 30px;
-				/* 각 폼 그룹의 하단 마진을 설정합니다. */
-				display: flex;
-				/* 폼 그룹 내의 항목들을 플렉스 박스로 배치합니다. */
-				align-items: center;
-				/* 폼 그룹 내 항목들을 수직 중앙에 정렬합니다. */
-				flex-wrap: wrap;
-				/* 줄바꿈을 허용 */
-			}
+.form-group input {
+	padding: 8px;
+	/* 입력 필드의 내부 여백을 설정합니다. */
+	border: 1px solid #ccc;
+	/* 입력 필드의 테두리 색을 연한 회색으로 설정합니다. */
+	height: 20px;
+	font-size: 16px;
+	width: 500px;
+}
 
-			.form-group label {
-				width: 150px;
-				/* 라벨의 너비를 150px로 설정합니다. */
-				margin-right: 10px;
-				/* 라벨과 입력 필드 사이의 여백을 설정합니다. */
-				font-weight: bold;
-				/* 라벨의 글씨를 두껍게 설정합니다. */
-				font-size: 21px;
-			}
+.form-group button {
+	border: none;
+	background-color: #ff4714;
+	color: #fdfdfd;
+	width: 200px;
+	height: 30px;
+	font-size: 16px;
+}
 
-			.form-group input {
-				padding: 8px;
-				/* 입력 필드의 내부 여백을 설정합니다. */
-				border: 1px solid #ccc;
-				/* 입력 필드의 테두리 색을 연한 회색으로 설정합니다. */
-				height: 20px;
-				font-size: 16px;
-				width: 500px;
-			}
+.paging {
+	text-align: center;
+	font-size: 20px;
+}
 
-			.form-group button {
-				border: none;
-				background-color: #ff4714;
-				color: #fdfdfd;
-				width: 200px;
-				height: 30px;
-				font-size: 16px;
-			}
+.keyword {
+	width: 600px;
+	border: none;
+	padding: 20px;
+	box-shadow: 0 0 10px 5px rgb(0, 0, 0, 0.02);
+}
 
-			.paging {
-				text-align: center;
-				font-size: 20px;
-			}
+.manager_pagination_current {
+	background-color: #ff4714;
+	color: #fdfdfd;
+	/* 텍스트 색상 */
+	padding: 5px 10px;
+	/* 패딩 추가 */
+	border-radius: 5px;
+	/* 둥근 모서리 */
+	font-weight: bold;
+	/* 글씨 두껍게 */
+}
+
+.manager_pagination {
+	font-size: 16px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 0 0 80px;
+}
+
+.manager_pagination_a {
+	color: #323232;
+	margin: 0 5px;
+}
+
+.manager_pagination_a_next {
+	color: #ff4714;
+	text-decoration: underline;
+	text-underline-position: under;
+	font-weight: 700;
+	margin: 0 5px;
+}
+
+.manager_pagination_a_back {
+	color: #ff4714;
+	text-decoration: underline;
+	text-underline-position: under;
+	font-weight: 700;
+	margin: 0 5px;
+}
+
+.manager_Qna_header_search {
+	display: flex;
+	position: relative;
+}
+
+.manager_Qna_header_search_but {
+	position: absolute;
+	right: 15px;
+	bottom: 10px;
+	border: none;
+	width: 50px;
+	height: 30px;
+	box-shadow: 0 0 10px 5px rgb(0, 0, 0, 0.01);
+	cursor: pointer;
+}
+
+.td_del_state {
+	display: flex;
+	justify-content: center;
+	align-content: centerl
+}
+
+.car_del_state_back1 {
+	background-color: #ff4714;
+	height: 25px;
+	width: 60px;
+	display: flex;
+	justify-content: center;
+	text-align: center;
+}
+
+.car_del_state1 {
+	font-size: 12px;
+	color: #fdfdfd;
+	align-items: center;
+	margin: 4px
+}
+
+/* 삭제시 */
+.car_del_state_back2 {
+	background-color: #5B4A80;
+	height: 25px;
+	width: 60px;
+	display: flex;
+	justify-content: center;
+}
+
+.car_del_state2 {
+	font-size: 12px;
+	color: #fdfdfd;
+	align-items: center;
+	margin: 4px
+}
+
+</style>
+</head>
+<script>
 
 
-			.keyword {
-				width: 600px;
-				border: none;
-				padding: 20px;
-				box-shadow: 0 0 10px 5px rgb(0, 0, 0, 0.02);
-			}
-
-
-			.manager_pagination_current {
-				background-color: #ff4714;
-				color: #fdfdfd;
-				/* 텍스트 색상 */
-				padding: 5px 10px;
-				/* 패딩 추가 */
-				border-radius: 5px;
-				/* 둥근 모서리 */
-				font-weight: bold;
-				/* 글씨 두껍게 */
-			}
-
-			.manager_pagination {
-				font-size: 16px;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				margin: 0 0 80px;
-			}
-
-			.manager_pagination_a {
-				color: #323232;
-				margin: 0 5px;
-			}
-
-			.manager_pagination_a_next {
-				color: #ff4714;
-				text-decoration: underline;
-				text-underline-position: under;
-				font-weight: 700;
-				margin: 0 5px;
-			}
-
-			.manager_pagination_a_back {
-				color: #ff4714;
-				text-decoration: underline;
-				text-underline-position: under;
-				font-weight: 700;
-				margin: 0 5px;
-			}
-
-			.manager_Qna_header_search {
-				display: flex;
-				position: relative;
-			}
-
-			.manager_Qna_header_search_but {
-				position: absolute;
-				right: 15px;
-				bottom: 10px;
-				border: none;
-				width: 50px;
-				height: 30px;
-				box-shadow: 0 0 10px 5px rgb(0, 0, 0, 0.01);
-				cursor: pointer;
-			}
-		</style>
-	</head>
-	<script>
 
 		// 날짜 포맷팅 함수
 		function formatDate(dateString) {
@@ -369,182 +385,158 @@
 			return formattedDate;
 		}
 
-		function searchUsers(currentPage) {
-			var keyword = document.getElementById("keyword").value;
+		// function searchUsers(currentPage) {
+		// 	var keyword = document.getElementById("keyword").value;
 
-			if (keyword.trim() === "") {
-				alert("검색어를 입력해주세요.");
-				return;
-			}
+		// 	if (keyword.trim() === "") {
+		// 		alert("검색어를 입력해주세요.");
+		// 		return;
+		// 	}
 
+		// 	$.ajax({
+		// 		url: '/view_jm/searchUser',
+		// 		type: 'GET',
+		// 		data: { keyword: keyword, currentPage: currentPage },  // currentPage 추가
+		// 		success: function (response) {
+		// 			// 서버로부터 받은 검색 결과로 테이블을 업데이트
+		// 			var tbody = document.querySelector("tbody");
+		// 			tbody.innerHTML = '';  // 기존 테이블 내용 초기화
+
+
+		// 			response.forEach(function (users) {
+
+		// 				// del_state에 따른 상태 표시를 위한 동적 처리
+		// 				var delStateHtml = '';
+		// 				if (users.del_state == 0) {
+		// 					delStateHtml = '<div class="faq_del_state_back1"><div class="faq_del_state1">정  상</div></div>';
+		// 				} else if (user.del_state == 1) {
+		// 					delStateHtml = '<div class="faq_del_state_back2"><div class="faq_del_state2">삭  제</div></div>';
+		// 				}
+
+		// 				var row = `<tr>
+		// 											<td>`+ users.user_type + `</td>
+		// 											<td>`+ users.user_id + `</td>
+		// 											<td>`+ users.user_name + `</td>
+		// 											<td>`+ users.user_tel + `</td>
+		// 											<td>`+ users.user_email + `</td>
+		// 											<td>` + formatDate(users.user_regdate) + `</td>
+		// 											<td>
+		// 												<button class="but_background" onclick="userActive('`+ users.user_id + `')">
+		// 													<img alt="노출_icon" src="<%=request.getContextPath()%>/images/main/노출_icon.png" class="but_images">
+		// 												</button>
+		// 												<button class="but_background" onclick="userDeactive('`+ users.user_id + `')">
+		// 													<img alt="삭제_icon" src="<%=request.getContextPath()%>
+	/images/main/삭제_icon.png" class="but_images">
+	// 												</button>
+	// 											</td>
+	// 											<td>
+	// 												` + delStateHtml + `
+	// 											</td>
+	// 										</tr>`;
+	// 				tbody.innerHTML += row;
+	// 			});
+	// 		},
+	// 		error: function (error) {
+	// 			console.error("검색 중 오류 발생", error);
+	// 			alert("검색 중 오류가 발생했습니다.");
+	// 		}
+	// 	});
+	// }
+	// 모달 열기 함수
+	function openModal() {
+		document.getElementById("adminModal").style.display = "block";
+	}
+
+	// 모달 닫기 함수
+	function closeModal() {
+		document.getElementById("adminModal").style.display = "none";
+	}
+
+	// 모달 외부를 클릭했을 때 닫기
+	window.onclick = function(event) {
+		var modal = document.getElementById("adminModal");
+		if (event.target == modal) {
+			modal.style.display = "none";
+		}
+	}
+	function userDeactive(userId) {
+		if (confirm(userId + " 님의 계정을 비활성화 하겠습니까?")) {
+			// 사용자가 "확인"을 누른 경우에만 AJAX 요청을 실행
 			$.ajax({
-				url: '/view_jm/searchUser',
-				type: 'GET',
-				data: { keyword: keyword, currentPage: currentPage },  // currentPage 추가
-				success: function (response) {
-					// 서버로부터 받은 검색 결과로 테이블을 업데이트
-					var tbody = document.querySelector("tbody");
-					tbody.innerHTML = '';  // 기존 테이블 내용 초기화
-
-
-					response.forEach(function (users) {
-
-						// del_state에 따른 상태 표시를 위한 동적 처리
-						var delStateHtml = '';
-						if (users.del_state == 0) {
-							delStateHtml = '<div class="faq_del_state_back1"><div class="faq_del_state1">정  상</div></div>';
-						} else if (user.del_state == 1) {
-							delStateHtml = '<div class="faq_del_state_back2"><div class="faq_del_state2">삭  제</div></div>';
-						}
-
-						var row = `<tr>
-													<td>`+ users.user_type + `</td>
-													<td>`+ users.user_id + `</td>
-													<td>`+ users.user_name + `</td>
-													<td>`+ users.user_tel + `</td>
-													<td>`+ users.user_email + `</td>
-													<td>` + formatDate(users.user_regdate) + `</td>
-													<td>
-														<button class="but_background" onclick="userActive('`+ users.user_id + `')">
-															<img alt="노출_icon" src="<%=request.getContextPath()%>/images/main/노출_icon.png" class="but_images">
-														</button>
-														<button class="but_background" onclick="userDeactive('`+ users.user_id + `')">
-															<img alt="삭제_icon" src="<%=request.getContextPath()%>/images/main/삭제_icon.png" class="but_images">
-														</button>
-													</td>
-													<td>
-														` + delStateHtml + `
-													</td>
-												</tr>`;
-						tbody.innerHTML += row;
-					});
+				url : '/view_jm/userDeactive',
+				type : 'GET',
+				dataType : 'json',
+				data : {
+					'user_id' : userId
+				}, // userId로 데이터 전송
+				success : function(response) {
+					alert("사용자가 성공적으로 비활성화 되었습니다.");
+					location.reload(); // 페이지 새로고침
 				},
-				error: function (error) {
-					console.error("검색 중 오류 발생", error);
-					alert("검색 중 오류가 발생했습니다.");
+				error : function(error) {
+					console.error("비활성화 중 오류 발생", error);
+					alert("삭제 중 오류가 발생했습니다.");
 				}
 			});
+		} else {
+			// 사용자가 "취소"를 누른 경우
+			alert("비활성화가 취소되었습니다.");
 		}
-		// 모달 열기 함수
-		function openModal() {
-			document.getElementById("adminModal").style.display = "block";
-		}
+	}
 
-		// 모달 닫기 함수
-		function closeModal() {
-			document.getElementById("adminModal").style.display = "none";
-		}
-
-		// 모달 외부를 클릭했을 때 닫기
-		window.onclick = function (event) {
-			var modal = document.getElementById("adminModal");
-			if (event.target == modal) {
-				modal.style.display = "none";
-			}
-		}
-		function userDeactive(userId) {
-			if (confirm(userId + " 님의 계정을 비활성화 하겠습니까?")) {
-				// 사용자가 "확인"을 누른 경우에만 AJAX 요청을 실행
-				$.ajax({
-					url: '/view_jm/userDeactive',
-					type: 'GET',
-					dataType: 'json',
-					data: {
-						'user_id': userId
-					}, // userId로 데이터 전송
-					success: function (response) {
-						alert("사용자가 성공적으로 비활성화 되었습니다.");
-						location.reload(); // 페이지 새로고침
-					},
-					error: function (error) {
-						console.error("비활성화 중 오류 발생", error);
-						alert("삭제 중 오류가 발생했습니다.");
-					}
-				});
-			} else {
-				// 사용자가 "취소"를 누른 경우
-				alert("비활성화가 취소되었습니다.");
-			}
-		}
-
-		function userActive(userId) {
-			if (confirm(userId + " 님의 계정을 활성화 하겠습니까?")) {
-				$.ajax({
-					url: '/view_jm/userActive',
-					type: 'GET',
-					dataType: 'json',
-					data: {
-						'user_id': userId
-					}, // userId로 데이터 전송
-					success: function (response) {
-						alert("사용자가 성공적으로 활성화 되었습니다.");
-						location.reload(); // 페이지 새로고침
-					},
-					error: function (error) {
-						console.error("활성화 중 오류 발생", error);
-						alert("삭제 중 오류가 발생했습니다.");
-					}
-				});
-
-			} else {
-				// 사용자가 "취소"를 누른 경우
-				alert("활성화가 취소되었습니다.");
-			}
-		}
-
-		function filterUserType(userType) {
-			const rows = document.querySelectorAll("tbody tr");
-			const adminBtn = document.getElementById("addAdminBtn"); // 관리자 추가 버튼
-
-			rows.forEach(row => {
-				const rowUserType = row.cells[0].innerText; // 첫 번째 셀에 사용자 유형이 있다고 가정
-				// 사용자 버튼 클릭 시 P, S, B 표시
-				if (userType === 'USER' && ['P', 'S', 'B'].includes(rowUserType)) {
-					row.style.display = ""; // 보이도록 설정
-					adminBtn.classList.add('hidden'); // 사용자일 때 관리자 추가 버튼 숨기기
-				}
-				// 관리자 버튼 클릭 시 A만 표시
-				else if (userType === 'ADMIN' && rowUserType === 'A') {
-					row.style.display = ""; // 보이도록 설정
-					adminBtn.classList.remove('hidden'); // 관리자일 때 관리자 추가 버튼 표시
-				} else {
-					row.style.display = "none"; // 숨김
+	function userActive(userId) {
+		if (confirm(userId + " 님의 계정을 활성화 하겠습니까?")) {
+			$.ajax({
+				url : '/view_jm/userActive',
+				type : 'GET',
+				dataType : 'json',
+				data : {
+					'user_id' : userId
+				}, // userId로 데이터 전송
+				success : function(response) {
+					alert("사용자가 성공적으로 활성화 되었습니다.");
+					location.reload(); // 페이지 새로고침
+				},
+				error : function(error) {
+					console.error("활성화 중 오류 발생", error);
+					alert("삭제 중 오류가 발생했습니다.");
 				}
 			});
+
+		} else {
+			// 사용자가 "취소"를 누른 경우
+			alert("활성화가 취소되었습니다.");
 		}
+	}
 
-		$(document).ready(function () {
-			// 페이지 로드 시 사용자 유형에 따라 버튼 상태 초기화
-			filterUserType('USER'); // 초기값을 'USER'로 설정하여 사용자 목록 표시 및 관리자 추가 버튼 숨김
-		});
+</script>
+</head>
+<body>
 
-	</script>
-	</head>
-	<body>
-	
+	<!--  컨테이너 ----------------------------------------------------->
+	<div class="manager_container">
 
-
-
-		<!--  컨테이너 ----------------------------------------------------->
-		<div class="manager_container">
-
-			<div class="manager_header">
-				<div class="manager_header_h1">회원목록
-					<!-- 사용자 버튼 -->
-					<button onclick="filterUserType('USER')">사용자</button>
-					<!-- 관리자 버튼 -->
-					<button onclick="filterUserType('ADMIN')">관리자</button>
-				</div>
-				<div class="manager_Qna_header_search">
-					<input type="text" name="keyword" class="keyword" id="keyword" placeholder="아이디 또는 이름 입력.">
-					<button onclick="searchUsers()" class="manager_Qna_header_search_but">검색</button>
-				</div>
-				<button id="addAdminBtn" class="hidden" onclick="openModal()">관리자추가</button>
+		<div class="manager_header">
+			<div class="manager_header_h1">
+				회원목록
+				<!-- 사용자 버튼 -->
+				<a href="/view_jm/searchUser">
+					<button>사용자</button>
+				</a> <a href="/view_jm/manager_adminList?&user_type=A">
+					<button id="admin">관리자</button>
+				</a>
 			</div>
-
-
-			<div class="manager_list">
-				<div class="container_table">
+			<form action="/view_jm/searchUser"  id="frm" >
+				<div class="manager_Qna_header_search">
+					<input type="text" name="keyword" class="keyword" id="keyword"
+						placeholder="아이디 또는 이름 입력.">
+					<button type="submit" class="manager_Qna_header_search_but">검색</button>
+				</div>
+			</form>
+		</div>
+		<div class="manager_list">
+			<div class="container_table">
+				<c:if test="${total>0}">
 					<table>
 						<thead>
 							<tr>
@@ -561,119 +553,93 @@
 						<tbody>
 							<c:forEach var="users" items="${userList }">
 								<tr>
-									<td>${users.user_type }</td>
+									<td><c:choose>
+											<c:when test="${users.user_type == 'P'}">전문가</c:when>
+											<c:when test="${users.user_type == 'S'}">판매자</c:when>
+											<c:when test="${users.user_type == 'B'}">구매자</c:when>
+											<c:when test="${users.user_type == 'A'}">관리자</c:when>
+										</c:choose></td>
 									<td>${users.user_id }</td>
 									<td>${users.user_name }</td>
 									<td>${users.user_tel }</td>
 									<td>${users.user_email }</td>
+									<td><fmt:formatDate value="${users.user_regdate}"
+											pattern="yyyy. MM. dd." /></td>
 									<td>
-										<fmt:formatDate value="${users.user_regdate}" pattern="yyyy. MM. dd." />
-									</td>
-									<td>
-										<button class="but_background" onclick="userActive('${users.user_id }')">
+										<button class="but_background"
+											onclick="userActive('${users.user_id }')">
 											<img alt="노출_icon"
 												src="<%=request.getContextPath()%>/images/main/노출_icon.png"
 												class="but_images">
 										</button>
-										<button class="but_background" onclick="userDeactive('${users.user_id }')">
+										<button class="but_background"
+											onclick="userDeactive('${users.user_id }')">
 											<img alt="삭제_icon"
 												src="<%=request.getContextPath()%>/images/main/삭제_icon.png"
 												class="but_images">
 										</button>
 									</td>
-									<td>
-										<c:choose>
+
+									<td class="td_del_state"><c:choose>
 											<c:when test="${users.del_state == 0 }">
-												<div class="faq_del_state_back1">
-													<div class="faq_del_state1">사 용</div>
+												<div class="car_del_state_back1">
+													<div class="car_del_state1">사 용</div>
 												</div>
 											</c:when>
 											<c:when test="${users.del_state == 1 }">
-												<div class="faq_del_state_back2">
-													<div class="faq_del_state2">탈 퇴</div>
+												<div class="car_del_state_back2">
+													<div class="car_del_state2">탈 퇴</div>
 												</div>
 											</c:when>
-										</c:choose>
-									</td>
+										</c:choose></td>
 								</tr>
 							</c:forEach>
 						</tbody>
 					</table>
-				</div>
-			</div>
-
-
-
-			<!-- 페이징 네비게이션 ------------------------------------- -->
-			<div class="manager_pagination">
-
-				<!-- 이전 페이지 ------------------->
-				<c:if test="${page.startPage > page.pageBlock}">
-					<a id="page" class="manager_pagination_a_back" href="?currentPage=${paging.startPage - 1}">이전</a>
 				</c:if>
 
-				<!-- 현재 페이지 ------------------->
-				<c:forEach var="i" begin="${page.startPage}" end="${page.endPage}">
-					<c:choose>
-						<c:when test="${i == page.currentPage}">
-							<span class="manager_pagination_current">${i}</span>
-						</c:when>
-						<c:otherwise>
-							<a id="page" class="manager_pagination_a"></a>
-						</c:otherwise>
-					</c:choose>
-				</c:forEach>
-
-				<!--  다음 페이지 -------------------->
-				<c:if test="${page.endPage < page.totalPage}">
-					<a class="manager_pagination_a_next" id="page" href="?currentPage=${paging.endPage + 1}">다음</a>
+				<c:if test="${total == 0}">
+					<div>
+						<h1>등록된 유저가 없습니다</h1>
+					</div>
 				</c:if>
-			</div>
 
-
-		</div>
-
-
-		<!-- 모달 -->
-		<div id="adminModal" class="modal">
-			<div class="modal-content">
-				<span class="close" onclick="closeModal()">&times;</span>
-				<h2>관리자 추가</h2>
-				<form action="/view_ad/createManager" method="post">
-					<input type="hidden" id="user_type" name="user_type" value="A">
-					<input type="hidden" id="del_state" name="del_state" value="0">
-					<input type="hidden" id="approval" name="approval" value="1">
-					<div class="form-group">
-						<label for="adminId">아이디:</label> 
-						<input type="text" id="user_id" name="user_id" required>
-					</div>
-					<div class="form-group">
-						<label for="adminId">비밀번호:</label> 
-						<input type="text" id="user_pw" name="user_pw" required>
-					</div>
-					<div class="form-group">
-						<label for="adminName">이름:</label> 
-						<input type="text" id="user_name" name="user_name" required>
-					</div>
-					<div class="form-group">
-						<label for="adminTel">전화번호:</label> 
-						<input type="tel" id="user_tel" name="user_tel" required>
-					</div>
-					<div class="form-group">
-						<label for="adminEmail">이메일:</label> 
-						<input type="email" id="user_email" name="user_email"
-							required>
-					</div>
-					<div class="form-group">
-						<button type="submit">관리자 추가</button>
-					</div>
-				</form>
 			</div>
 		</div>
+		<!-- 페이징 네비게이션 ------------------------------------- -->
+		<div class="manager_pagination">
+
+			<!-- 이전 페이지 ------------------->
+			<c:if test="${page.startPage > page.pageBlock}">
+				<a id="page" class="manager_pagination_a_back"
+					href="/view_jm/searchUser?currentPage=${page.startPage - page.pageBlock > 0 ? page.startPage - page.pageBlock : 1}&total=${total}&keyword=${keyword}">
+					이전 </a>
+			</c:if>
+
+
+			<!-- 현재 페이지 ------------------->
+			<c:forEach var="i" begin="${page.startPage}" end="${page.endPage}">
+				<c:choose>
+					<c:when test="${i == page.currentPage}">
+						<span class="manager_pagination_current">${i}</span>
+					</c:when>
+					<c:otherwise>
+						<a id="page" class="manager_pagination_a"
+							href="/view_jm/searchUser?currentPage=${i}&total=${total}&keyword=${keyword}">${i}</a>
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
+
+			<!--  다음 페이지 -------------------->
+			<c:if test="${page.endPage < page.totalPage}">
+				<a class="manager_pagination_a_next" id="page"
+					href="/view_jm/searchUser?currentPage=${page.startPage+page.pageBlock}&total=${total}&keyword=${keyword}">다음</a>
+			</c:if>
+		</div>
+	</div>
 
 
 
+</body>
 
-	</body>
-
-	</html>
+</html>

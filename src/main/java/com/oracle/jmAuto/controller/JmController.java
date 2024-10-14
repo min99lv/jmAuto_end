@@ -43,22 +43,24 @@ public class JmController {
 	private final JmService js;
 	private final EmailService es;
 
-	// NOTE - 로그인 화면 출력
+	// NOTE - 로그인 화면 출력 **********************************************
 	@GetMapping(value = "/login")
 	public String loginForm() {
-		System.out.println("JmController.loginForm start...");
+		System.out.println("JmController.loginForm start  ------------------------ ");
 		return "view_jm/login";
 	}
 
-	// NOTE - 로그인 처리 로직 
+	// NOTE - 로그인 처리 로직 **********************************************
 	@PostMapping(value = "/login")
-	public String login(@RequestParam("user_id") String user_id, @RequestParam("user_pw") String user_pw, Model model,
-			HttpSession session, HttpServletRequest request) {
-				System.out.println("JmController.login()" + user_id);
-		System.out.println("JmController.login start...");
+	public String login(
+										@RequestParam("user_id") String user_id, 
+										@RequestParam("user_pw") String user_pw, Model model,
+										HttpSession session, HttpServletRequest request) {
+
+		System.out.println("JmController.login start ----------------------");
+		System.out.println("JmController.login() [user_id] >> " + user_id);
 		User_Table user_table = new User_Table();
 		user_table = js.login(user_id, user_pw);
-		System.out.println("JmController.login user_table--->" + user_table);
 
 		// 로그인 실패: 비밀번호가 틀리거나 사용자 정보가 없음
 		if (user_table == null) {
@@ -66,47 +68,49 @@ public class JmController {
 			model.addAttribute("user_id", user_id); // 입력한 아이디를 다시 전달
 			return "view_jm/login"; // 로그인 페이지로 리다이렉트
 		}
-		
+
 		// 탈퇴한 사용자 체크
 		if (user_table.getDel_state() == 1) {
 			model.addAttribute("loginError", "탈퇴한 회원입니다.");
 			return "view_jm/login";
 		}
-	
+
 		// 승인 요청 중 체크
 		if (user_table.getApproval().equals("0")) { // 예시로 승인 요청 중 체크
 			model.addAttribute("loginError", "승인 요청 중입니다.");
 			return "view_jm/login";
 		}
-		 // 탈퇴 상태 확인
-		 System.out.println("탈퇴 상태: " + user_table.getDel_state());String user_id1 = user_table.getUser_id();
+		// 탈퇴 상태 확인
+		System.out.println("탈퇴 상태: " + user_table.getDel_state());
+		String user_id1 = user_table.getUser_id();
 		// 로그인 성공시
 		System.out.println("JmController.login 성공!!!!!");
 
 		// 기존 세션을 무효화하고 새로운 세션 ID 발급
 		session.invalidate(); // 기존 세션을 무효화
-		//request.changeSessionId(); // 새로운 세션 ID 발급
+		// request.changeSessionId(); // 새로운 세션 ID 발급
 		session = request.getSession(true); // 새로운 세션 생성
 
 		// 사용자 정보를 세션에 저장
 		session.setAttribute("user", user_table); // 새로운 세션에 사용자 정보 저장
 		session.setMaxInactiveInterval(30 * 60); // 30분 동안 활동이 없으면 세션 만료 설정
 		System.out.println("JmController.login() session >>>" + session.getAttribute("user"));
+
 		// 사용자 ID저장
-		SessionUtils.addAttribute("user_id",  user_id1);
+		SessionUtils.addAttribute("user_id", user_id1);
 		return "redirect:/";
 	}
 
-	// NOTE - 로그아웃 (세션 해제)
+	// NOTE - 로그아웃 (세션 해제) **************************************
 	@GetMapping(value = "/logout")
 	public String logout(HttpSession session, Model model) {
 		System.out.println("JmController.logout start.....");
-		// 세션 해제 
+		// 세션 해제
 		session.invalidate();
 		return "redirect:/";
 	}
 
-	// NOTE - 회원가입 유형 화면 출력
+	// NOTE - 회원가입 유형 화면 출력 ***********************************
 	@GetMapping(value = "/joinType")
 	public String joinTypeForm() {
 		System.out.println("JmController.joinTypeForm start.....");
@@ -114,26 +118,25 @@ public class JmController {
 		return "view_jm/joinType";
 	}
 
-	// --------------------------------Buyer Join--------------------------------------
-	//  NOTE - buyer join Agree form
+
+	// NOTE - 회원가입 화면 - 구매자 ***********************************
 	@GetMapping(value = "/buyerJoinAgree")
 	public String buyerJoinAgreeForm() {
-
 		System.out.println("JmController.buyerJoinAgreeForm start...");
 		return "view_jm/buyerJoinAgree";
 	}
 
-	// NOTE - buyer join info form
+	// NOTE - 회원가입 처리 - 구매자 ***********************************
 	@GetMapping(value = "/buyerJoinInfo")
 	public String buyerJoinInfoForm() {
-		System.out.println("Jmcontroller.buyerJoinInfoForm start...");
+		System.out.println("Jmcontroller.buyerJoinInfoForm start ----------------");
 		return "view_jm/buyerJoinInfo";
 	}
 
-	// NOTE - buyer 회원가입
+	// NOTE - 회원가입 - 구매자 ***************************************
 	@PostMapping(value = "/join")
 	public String join(@ModelAttribute User_Table user, Model model) {
-		System.out.println("JmController.join start...");
+		System.out.println("JmController.join start ------------------");
 		System.out.println("JmController.join USER-->" + user);
 		System.out.println("JmController.join USER-->" + user.getUser_type());
 
@@ -157,9 +160,7 @@ public class JmController {
 	}
 
 	// ---------------------------------------------------------------------------------
-
-	// --------------------------------seller Join--------------------------------------- 
-	//  NOTE - seller join Form 화면 출력
+	// NOTE - 회원가입 - 판매자 화면 출력 *******************************
 
 	@GetMapping(value = "/sellerJoinAgree")
 	public String sellerJoinAgreeForm() {
@@ -169,7 +170,7 @@ public class JmController {
 		return "view_jm/sellerJoinAgree";
 	}
 
-	// NOTE - seller join info form_1 화면 출력
+	// NOTE - 회원가입 - 판매자 처리 ***********************************
 	@GetMapping(value = "/sellerJoinInfo_1")
 	public String sellerJoinInfoForm() {
 
@@ -237,7 +238,7 @@ public class JmController {
 
 	// NOTE - 판매자 회원가입
 	@PostMapping(value = "/sellerJoinRequest")
-	public String sellerJoin(HttpServletRequest request ,User_Table user_table, HttpSession session, Account account)
+	public String sellerJoin(HttpServletRequest request, User_Table user_table, HttpSession session, Account account)
 			throws FileNotFoundException, IOException {
 		System.out.println("JmController.sellerJoin start...");
 
@@ -298,7 +299,8 @@ public class JmController {
 
 	// ----------------------------------------------------------------------------------
 
-	// -----------------------------------prof join--------------------------------------
+	// -----------------------------------prof
+	// join--------------------------------------
 	// NOTE - prof join Form
 	@GetMapping(value = "/profJoinAgree")
 	public String profJoinAgreeForm() {
@@ -374,7 +376,8 @@ public class JmController {
 
 	// NOTE - 전문가 회원가입
 	@PostMapping(value = "/profJoinRequest")
-	public String profJoin(HttpServletRequest request,@ModelAttribute User_Table user_table, HttpSession session, Account account)
+	public String profJoin(HttpServletRequest request, @ModelAttribute User_Table user_table, HttpSession session,
+			Account account)
 			throws FileNotFoundException, IOException {
 		System.out.println("JmController.profJoin start...");
 		System.out.println("Certified Info in Session: " + session.getAttribute("certifiedInfo"));
@@ -443,24 +446,24 @@ public class JmController {
 	}
 
 	@PostMapping("/sendAuthCode")
-    @ResponseBody
-    public Map<String, String> sendAuthCode(HttpServletRequest request, @RequestParam("user_email") String user_email) {
-        Map<String, String> response = new HashMap<>();
+	@ResponseBody
+	public Map<String, String> sendAuthCode(HttpServletRequest request, @RequestParam("user_email") String user_email) {
+		Map<String, String> response = new HashMap<>();
 		System.out.println("JmController.sendAuthCode() start....");
 		System.out.println("JmController.sendAuthCode() user_email >>> " + user_email);
 		try {
-            String authCode = es.sendAuthCode(user_email);
-            HttpSession session = request.getSession();
+			String authCode = es.sendAuthCode(user_email);
+			HttpSession session = request.getSession();
 			System.out.println("JmController.sendAuthCode() 트라이 start....");
 			session.setAttribute("authCode", authCode);
 			session.setMaxInactiveInterval(300);
-            response.put("message", "이메일로 인증번호가 전송되었습니다.");
+			response.put("message", "이메일로 인증번호가 전송되었습니다.");
 
-        } catch (Exception e) {
-            response.put("message", "이메일 전송에 실패했습니다.");
-        }
-        return response;
-    }
+		} catch (Exception e) {
+			response.put("message", "이메일 전송에 실패했습니다.");
+		}
+		return response;
+	}
 
 	// NOTE - 인증번호 확인 로직
 	@PostMapping("/verifyAuthCode")
@@ -476,8 +479,8 @@ public class JmController {
 		}
 	}
 
-
-		//  ******************************************** 아이디 찾기 ************************************************* //
+	// ******************************************** 아이디 찾기
+	// ************************************************* //
 
 	// NOTE - 아이디 찾기 화면 출력
 	@GetMapping(value = "/findId")
@@ -490,12 +493,13 @@ public class JmController {
 
 	// NOTE - 아이디 찾기
 	@PostMapping(value = "/findId")
-	public String findId(@RequestParam("user_email") String user_email,@RequestParam("user_name") String user_name, Model model) {
+	public String findId(@RequestParam("user_email") String user_email, @RequestParam("user_name") String user_name,
+			Model model) {
 		System.out.println("JmController.findId start....");
 
 		System.out.println("JmController.findId user_email >>>>" + user_email);
 		System.out.println("JmController.findId user_name >>>>" + user_name);
-		
+
 		User_Table user = new User_Table();
 
 		user.setUser_email(user_email);
@@ -505,26 +509,23 @@ public class JmController {
 
 		System.out.println("JmController.findId user_id >>> " + user_id);
 
-		if(user_id != null){
+		if (user_id != null) {
 			model.addAttribute("user_id", user_id);
 			model.addAttribute("userCheckMessage", "회원님의 이메일로 가입된 아이디 입니다.");
-		}else{
+		} else {
 			model.addAttribute("userCheckMessage", "회원정보와 일치하는 아이디가 존재하지 않습니다.");
 		}
-
 
 		return "view_jm/findIdResult";
 	}
 
-	
-	
-	//  ******************************************** 비밀번호 찾기 *************************************************//
-	
-	// NOTE - 비밀번호 찾기 화면 출력
+	// ************************************************************
+
+	// NOTE - 비밀번호 찾기 화면 출력 ********************************
 	@GetMapping(value = "/findPw")
 	public String findPwForm() {
 
-		System.out.println("JmController.findIdForm  start..");
+		System.out.println("JmController.findpwForm  start -----------------------");
 
 		return "view_jm/findPw";
 	}
@@ -538,9 +539,9 @@ public class JmController {
 		System.out.println("JmController.findPw user_id >>> " + user.getUser_id());
 		System.out.println("JmController.findPw user_email >>> " + user.getUser_email());
 
-		// 사용자 확인 
+		// 사용자 확인
 		User_Table user_table = js.findPw(user);
-
+		System.out.println("JmController.findPw() user_table" + user_table);
 		if (user_table != null) {
 			String user_id = user_table.getUser_id();
 			model.addAttribute("user_id", user_id);
@@ -553,129 +554,211 @@ public class JmController {
 
 	}
 
-	
-	// NOTE - 비밀번호 찾기 - 임시비밀번호 발급 
+	// NOTE - 비밀번호 찾기 - 임시비밀번호 발급
 	@PostMapping(value = "/tempPassword")
 	public String tempPassword(@RequestParam String user_id, Model model) {
 		// 임시 비밀번호 생성 후 업데이트
 		String tempPassword = js.createTempPassword(user_id);
 		System.out.println("JmController.tempPassword tempPassword : " + tempPassword);
 
-		
 		// 이메일로 비밀번호 발송
 		int result = es.sendTempPw(user_id, tempPassword);
 		System.out.println("JmController.tempPassword result >>> " + result);
 
-		if(result > 0) {
-			
+		if (result > 0) {
+
 			return "view_jm/login";
-			
-		}else {
+
+		} else {
 			return "view_jm/findPw";
 		}
 	}
 
-
-
-
 	// ************************* //
 	// ****** 관리자 페이지 ****** //
 	// ************************* //
-	
 
+	// // NOTE : 회원 목록 조회
+	// @GetMapping(value = "/manager_userList")
+	// public String adminPage(@RequestParam(value = "currentPage", defaultValue =
+	// "1") String currentPage
+	// ,HttpSession session, Model model) {
 
-	// NOTE : 회원 목록 조회
-	@GetMapping(value = "/manager_userList")
-	public String adminPage(@RequestParam(value = "currentPage", defaultValue = "1") String currentPage
-												,HttpSession session, Model model) {
+	// System.out.println("AdminController.adminPage() start...");
+	// User_Table user = (User_Table) session.getAttribute("user");
 
-		System.out.println("AdminController.adminPage() start...");
-		User_Table user = (User_Table) session.getAttribute("user");
+	// // manager 페이지 접근을 위해 --> user가 null인지 확인하고, user_type이 'A'인지 확인
+	// if (user != null && "A".equals(user.getUser_type())) {
 
-		//  manager 페이지 접근을 위해  --> user가 null인지 확인하고, user_type이 'A'인지 확인 
-		if (user != null && "A".equals(user.getUser_type())) {
-			
-			// 총 회원수 
-			int userTotal = js.userTotal();
-			// 관리자용 페이징
-			Paging page = new Paging(userTotal,currentPage);
-			
-			// 회원 목록 조회
-			List<User_Table> userList = js.selectUserList(page.getStart(), page.getEnd());
-			
-			// 모델에 데이터 추가
-			model.addAttribute("page", page);
-			model.addAttribute("userList", userList);
+	// // 총 회원수
+	// int userTotal = js.userTotal();
+	// // 관리자용 페이징
+	// Paging page = new Paging(userTotal,currentPage);
 
+	// System.out.println("JmController.adminPage() page"+page);
+	// // 회원 목록 조회
+	// List<User_Table> userList = js.selectUserList(page.getStart(),
+	// page.getEnd());
 
-			// user_type이 'A'인 경우 관리자 페이지로 이동
-			return "view_jm/manager_userList";
-		} else {
-			// user가 없거나 user_type이 'A'가 아닌 경우 로그인 페이지로 리다이렉트
-			return "view_jm/login";
-		}
-	}
+	// // 모델에 데이터 추가
+	// model.addAttribute("total", userTotal);
+	// model.addAttribute("page", page);
+	// model.addAttribute("userList", userList);
+
+	// // user_type이 'A'인 경우 관리자 페이지로 이동
+	// return "view_jm/manager_userList";
+	// } else {
+	// // user가 없거나 user_type이 'A'가 아닌 경우 로그인 페이지로 리다이렉트
+	// return "view_jm/login";
+	// }
+	// }
 
 	// NOTE : 회원 목록 검색
 	@GetMapping(value = "/searchUser")
-	@ResponseBody
-	public List<User_Table> searchUserList(@RequestParam(value = "currentPage", defaultValue = "1") String currentPage, @RequestParam("keyword") String keyword, HttpSession session, Model model) {
+	public String searchUserList(
+			@RequestParam(value = "currentPage", defaultValue = "1") String currentPage,
+			@RequestParam(value = "keyword", required = false) String keyword,
+			HttpSession session,
+			Model model) {
 
 		System.out.println("AdminController.searchUserList() start...");
 
-		System.out.println(currentPage);
+		int userTotal = 0;
+		Paging page = new Paging();
+		List<User_Table> userList = null;
+		// 검색 키워드가 null 이거나 비어져 있는 경우
+		if (keyword == null || keyword.trim().isEmpty()) {
+			userTotal = js.userTotal();
+			// 페이징에 따라 조회 범위 설정
+			page = new Paging(userTotal, currentPage);
+			// Map 객체 생성하여 파라미터 설정
+			Map<String, Object> params = new HashMap<>();
+			params.put("start", page.getStart());
+			params.put("end", page.getEnd());
+			userList = js.selectUserList(params);
 
-		// 총 회원수 
-		int userTotal = js.userTotal(keyword);
-		Paging paging = new Paging(userTotal,currentPage);
+		} else {
+			Map<String, Object> params = new HashMap<>();
+			params.put("keyword", keyword); // String 타입
+			userTotal = js.userTotal(params);
+			page = new Paging(userTotal, currentPage);
+			System.out.println("확인 ++++++++" + page);
 
-		System.out.println("JmController.searchUserList()paging.getStartIndex();-------------------"+paging);
-		
+			userList = js.searchUserList(keyword, page.getStart(), page.getEnd());
 
-		//List<User_Table> users = js.searchUserList(keyword,paging.getStartIndex(), paging.getRowPage());
+		}
 
-		System.out.println("JmController.searchUserList()paging.getStartPage();-------------------"+paging.getStartPage());
-		System.out.println("JmController.searchUserList()paging.getEndPage();-------------------"+paging.getEndPage());
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("total", userTotal);
+		model.addAttribute("userList", userList);
+		model.addAttribute("page", page);
 
-		//model.addAttribute("paging", paging);
-		//model.addAttribute("users", users);
-
-		return null;
+		return "view_jm/manager_userList";
 	}
 
+	// NOTE - 관리자 목록
+	@GetMapping("/manager_adminList")
+	public String adminList(
+			@RequestParam(value = "currentPage", defaultValue = "1") String currentPage,
+			@RequestParam(value = "keyword", required = false) String keyword,
+			@RequestParam(value = "user_type", required = false) String user_type,
+			HttpSession session,
+			Model model) {
+				
+		System.out.println("JmController.adminList() start....");
+		System.out.println("user_Type===>" + user_type);
+		int userTotal = 0;
+		Paging page = new Paging();
+		List<User_Table> userList = null;
+		// Map 객체 생성하여 파라미터 설정
+		Map<String, Object> params = new HashMap<>();
+		params.put("keyword", keyword); // String 타입
+		params.put("user_type", user_type); // int 타입
+		userTotal = js.userTotal(params);
 
-	// NOTE : 사용자 계정 비활성화
+		System.out.println("------->" + userTotal);
+
+		page = new Paging(userTotal, currentPage);
+
+		System.out.println("확인 ++++++++" + page);
+		params.put("start", page.getStart());
+		params.put("end", page.getEnd());
+		userList = js.selectUserList(params);
+
+		System.out.println("AdminController.adminPage()  --> userList" + userList);
+
+		model.addAttribute("total", userTotal);
+		model.addAttribute("userList", userList);
+		model.addAttribute("page", page);
+
+		return "view_jm/manager_adminList";
+	}
+
+	// NOTE - 사용자 계정 비활성화
 	@GetMapping("/userDeactive")
 	@ResponseBody
 	public int userDeactive(@RequestParam("user_id") String user_id) {
-		System.out.println("AdminController.userDel() start...");
-		System.out.println("AdminController.userDel() user_id ....>>" + user_id);
+		System.out.println("AdminController.userDeactive() start...");
+		System.out.println("AdminController.userDeactive() user_id ....>>" + user_id);
 
 		int result = js.userDeactive(user_id);
 
 		return result;
 	}
 
+	// NOTE -  사용자 계정 활성화 
 	@GetMapping("/userActive")
 	@ResponseBody
 	public int userActive(@RequestParam("user_id") String user_id) {
-		System.out.println("AdminController.userDel() start...");
-		System.out.println("AdminController.userDel() user_id ....>>" + user_id);
 
+		System.out.println("AdminController.userActive() start ----------------");
+		System.out.println("AdminController.userActive() [ user_id ] ------- >>" + user_id);
 		int result = js.userActive(user_id);
-
+		
 		return result;
 	}
 
 	// NOTE : 판매자 전문가 승인 요청 목록
 	@GetMapping("/manager_userApproval")
-	public String userApproval(Model model) {
-		System.out.println("AdminController.userApproval start...");
+	public String userApproval(
+			@RequestParam(value = "currentPage", defaultValue = "1") String currentPage,
+			@RequestParam(value = "user_type", required = false) String user_type,
+			HttpSession session,
+			Model model) {
 
-		List<User_Table> userList = js.selectApprovalUser();
+		System.out.println("AdminController.userApproval() ----------------------");
+		System.out.println("JmController.userApproval() [ user_type ] >> " + user_type );
+		
+		int approvalTotal = 0;
+		Paging page = new Paging();
+		List<User_Table> userList = null;
+
+		Map<String, Object> params = new HashMap<>();
+		params.put("user_type", user_type); // int 타입
+
+		// 검색 키워드가 null 이거나 비어져 있는 경우
+		if (user_type == null || user_type.trim().isEmpty()) {
+			approvalTotal = js.approvalTotal();
+			page = new Paging(approvalTotal, currentPage);
+			params.put("start", page.getStart());
+			params.put("end", page.getEnd());
+			// 페이징에 따라 조회 범위 설정
+			userList = js.selectApprovalUser(params);
+
+		} else {
+			approvalTotal = js.approvalTotal(user_type);
+			page = new Paging(approvalTotal, currentPage);
+			params.put("start", page.getStart());
+			params.put("end", page.getEnd());
+			// 페이징에 따라 조회 범위 설정
+			userList = js.selectApprovalUser(params);
+		}
+
 		System.out.println("AdminController.adminPage()  --> userList" + userList);
 
+		model.addAttribute("total", approvalTotal);
 		model.addAttribute("userList", userList);
+		model.addAttribute("page", page);
 
 		return "view_jm/manager_userApproval";
 
@@ -721,6 +804,8 @@ public class JmController {
 	// NOTE - 관리자 추가
 	@PostMapping(value = "/createManager")
 	public String createManage(@ModelAttribute User_Table user_table) {
+
+		System.out.println("%^%$^$%^##%$%$%$#%#^#%^$#%RFFGGFFFG");
 		// 1. 유저 객체 생성
 		User_Table user = new User_Table();
 
@@ -738,16 +823,14 @@ public class JmController {
 		// 3. 서비스로 보내서 insert
 		int result = js.createManager(user);
 
-		if (result > 0) {
-			return "view_jm/adminPage";
-		} else {
+		System.out.println("fjldsflkdslf" + result);
 
+		if (result > 0) {
+			return "redirect:/view_jm/manager_adminList?user_type=" + user.getUser_type();
+		} else {
 			return "view_jm/login";
 		}
 
 	}
 
-	
-
-	
 }
