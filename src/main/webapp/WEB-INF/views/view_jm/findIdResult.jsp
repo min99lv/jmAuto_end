@@ -43,6 +43,7 @@
 
 		}
 
+		
 		footer{
 			position: relative;
 			top: 50px;
@@ -89,7 +90,7 @@
 						<div class="form-group">
 							<div class="moveBtn">
 								<a href="/view_jm/findId.jsp">
-									<button id="submitBtn">다시 아이디 찾기</button>
+									<button id="submitBtn" style="position: relative;left: 180px;">다시 아이디 찾기</button>
 								</a>
 							</div>
 						</div>
